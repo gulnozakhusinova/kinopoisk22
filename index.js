@@ -1,29 +1,39 @@
 const API_KEY = 'eb43132e'
 
 async function fetchData(title) {
+  const spiner = document.querySelector("#spiner")
+  spiner.style.display = 'block'
   const response = await fetch(`https://www.omdbapi.com/?i=tt3896198&apikey=${API_KEY}&t="${title}"`)
   const data = await response.json()
+  spiner.style.display = 'none'
   return data
 }
 
-console.log(fetchData());
+
 
 
 
 const searchInputElement = document.querySelector('#movie-search-input')
 const searchButtonElement = document.querySelector("#movie-search-button")
 
- 
+
 let movieTitleValue = ''
 let movie = null
 
 searchButtonElement.addEventListener('click', async () => {
   const searchResultsContainer = document.querySelector('.search-results')
-  searchResultsContainer.innerHTML = ""
 
+  if (movie && movie.Title.toLowerCase().includes(movieTitleValue.toLocaleLowerCase())) return
+  searchResultsContainer.innerHTML = ""
 
   movieTitleValue = searchInputElement.value
   movie = await fetchData(movieTitleValue)
+
+  if (movie.Response === "False") {
+    alertMessage('movie not found', 'error')
+    return
+  }
+
   const cardElementTemplate = `
   <div class="card" style="width: 18rem">
       <img
@@ -44,12 +54,15 @@ searchButtonElement.addEventListener('click', async () => {
           </a>
       </div>
   </div>`
-  
- 
+
+
   console.log(searchResultsContainer.children)
-  
+
   searchResultsContainer.insertAdjacentHTML('beforeend', cardElementTemplate)
+
+  alertMessage("success", 'success')
 })
+
 
 
 const myModalEl = document.getElementById('exampleModal')
@@ -57,7 +70,7 @@ const myModalEl = document.getElementById('exampleModal')
 myModalEl.addEventListener('show.bs.modal', event => {
   console.log("hello");
   document.getElementById('exampleModalLabel').textContent = movie.Title
-  document.querySelector("#cardTitle").textContent= movie.Title
+  document.querySelector("#cardTitle").textContent = movie.Title
   document.getElementById('modal-body-image').src = movie.Poster
 
   document.getElementById('cardActors').textContent = movie.Actors
@@ -75,12 +88,32 @@ myModalEl.addEventListener('show.bs.modal', event => {
 
 const modalBoxesElement = document.querySelector("#modal-boxes")
 
-// modalBoxesElement.addEventListener("click", async() => {
-
-// })
 
 
+function alertMessage(message, type) {
+  const toastBody = document.querySelector("#toast-body")
+  let toast = document.getElementById('toast')
 
+  toastBody.textContent = message
+  
+  if (type === "success") {
+    toast.style.border = '1px solid green'
+    toastBody.style.color ='green'
+  } else if (type === "error") {
+    toast.style.border = '1px solid red'
+      toastBody.style.color ='red'
+  }
+
+  $('.toast').toast('show')
+}
+
+
+
+
+
+const a = [1, 2, 3]
+console.log(a[2]);
+console.log(a.at(-1));
 
 
 
