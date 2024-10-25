@@ -52,15 +52,43 @@ searchButtonElement.addEventListener('click', async () => {
               >
               Подробнее
           </a>
+
+            <a
+              href="#"
+              class="btn btn-primary add-fav-btn" style="margin-top: 10px;"
+              >
+            Добавить в избранное
+          </a>
       </div>
   </div>`
 
 
-  console.log(searchResultsContainer.children)
-
+  
   searchResultsContainer.insertAdjacentHTML('beforeend', cardElementTemplate)
-
   alertMessage("success", 'success')
+
+  searchResultsContainer.innerHTML = ''
+  searchResultsContainer.insertAdjacentHTML('beforeend', cardElementTemplate)
+  let addedMovie = movie
+
+  const addFavButton = document.querySelector('.add-fav-btn')
+  addFavButton.addEventListener('click', () => {
+
+      if(localStorage.getItem('favMovies') === null) {
+          const favMoviesList = []
+          favMoviesList.push(movie)
+          localStorage.setItem('favMovies', JSON.stringify(favMoviesList))
+          return
+      }
+
+      const favMoviesList = JSON.parse(localStorage.getItem('favMovies'))
+      favMoviesList.push(movie)
+      localStorage.setItem('favMovies', JSON.stringify(favMoviesList))
+  })
+
+
+
+
 })
 
 
@@ -88,8 +116,6 @@ myModalEl.addEventListener('show.bs.modal', event => {
 
 const modalBoxesElement = document.querySelector("#modal-boxes")
 
-
-
 function alertMessage(message, type) {
   const toastBody = document.querySelector("#toast-body")
   let toast = document.getElementById('toast')
@@ -111,9 +137,6 @@ function alertMessage(message, type) {
 
 
 
-const a = [1, 2, 3]
-console.log(a[2]);
-console.log(a.at(-1));
 
 
 
@@ -130,12 +153,35 @@ console.log(a.at(-1));
 
 
 
+// const a = [1, 2, 3]
+// console.log(a[2]);
+// console.log(a.at(-1));
+
+//document.body.previousElementSibling()
+
+// localStorage examples
+const phoneNumber = ['998900909840','998974635203']
+localStorage.setItem('phoneNumber', phoneNumber)
+
+const myBirthDay =['30.05.2003']
+localStorage.setItem('myBirthDay', myBirthDay)
+
+let myData = {
+age: 21,
+sex: 'female',
+pets:['cat']
+
+}
+
+localStorage.setItem('myData',JSON.stringify(myData))
 
 
+let myDataJson = localStorage.getItem("myData")
+ myData = JSON.parse(myDataJson)
+ console.log(myData.pets[0]);
+ 
 
-
-
-
+// localStorage.clear()
 
 
 // console.log(titanic);
