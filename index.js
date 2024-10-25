@@ -23,10 +23,11 @@ let movie = null
 searchButtonElement.addEventListener('click', async () => {
   const searchResultsContainer = document.querySelector('.search-results')
 
+  movieTitleValue = searchInputElement.value
+
   if (movie && movie.Title.toLowerCase().includes(movieTitleValue.toLocaleLowerCase())) return
   searchResultsContainer.innerHTML = ""
 
-  movieTitleValue = searchInputElement.value
   movie = await fetchData(movieTitleValue)
 
   if (movie.Response === "False") {
@@ -63,7 +64,7 @@ searchButtonElement.addEventListener('click', async () => {
   </div>`
 
 
-  
+
   searchResultsContainer.insertAdjacentHTML('beforeend', cardElementTemplate)
   alertMessage("success", 'success')
 
@@ -74,16 +75,16 @@ searchButtonElement.addEventListener('click', async () => {
   const addFavButton = document.querySelector('.add-fav-btn')
   addFavButton.addEventListener('click', () => {
 
-      if(localStorage.getItem('favMovies') === null) {
-          const favMoviesList = []
-          favMoviesList.push(movie)
-          localStorage.setItem('favMovies', JSON.stringify(favMoviesList))
-          return
-      }
-
-      const favMoviesList = JSON.parse(localStorage.getItem('favMovies'))
+    if (localStorage.getItem('favMovies') === null) {
+      const favMoviesList = []
       favMoviesList.push(movie)
       localStorage.setItem('favMovies', JSON.stringify(favMoviesList))
+      return
+    }
+
+    const favMoviesList = JSON.parse(localStorage.getItem('favMovies'))
+    favMoviesList.push(movie)
+    localStorage.setItem('favMovies', JSON.stringify(favMoviesList))
   })
 
 
@@ -121,13 +122,13 @@ function alertMessage(message, type) {
   let toast = document.getElementById('toast')
 
   toastBody.textContent = message
-  
+
   if (type === "success") {
     toast.style.border = '1px solid green'
-    toastBody.style.color ='green'
+    toastBody.style.color = 'green'
   } else if (type === "error") {
     toast.style.border = '1px solid red'
-      toastBody.style.color ='red'
+    toastBody.style.color = 'red'
   }
 
   $('.toast').toast('show')
@@ -153,37 +154,4 @@ function alertMessage(message, type) {
 
 
 
-// const a = [1, 2, 3]
-// console.log(a[2]);
-// console.log(a.at(-1));
 
-//document.body.previousElementSibling()
-
-// localStorage examples
-const phoneNumber = ['998900909840','998974635203']
-localStorage.setItem('phoneNumber', phoneNumber)
-
-const myBirthDay =['30.05.2003']
-localStorage.setItem('myBirthDay', myBirthDay)
-
-let myData = {
-age: 21,
-sex: 'female',
-pets:['cat']
-
-}
-
-localStorage.setItem('myData',JSON.stringify(myData))
-
-
-let myDataJson = localStorage.getItem("myData")
- myData = JSON.parse(myDataJson)
- console.log(myData.pets[0]);
- 
-
-// localStorage.clear()
-
-
-// console.log(titanic);
-// console.log(titanic.Director);
-// console.log(titanic["Director"]);
